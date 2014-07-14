@@ -1,0 +1,30 @@
+#!/bin/bash
+
+xmin=-0.5
+#xmax=100
+xmax=3.5
+ymin=0
+ymax=6000
+
+gnuplot << EOF
+
+set terminal jpeg medium
+set output "emj_prodPeriod.jpg"
+
+set xlabel 'period between sending a message (ms)'
+set ylabel 'average maximum jitter (ms)'
+
+#set key top right
+set xtics ("10"0,"100"1,"500"2,"1000"3)
+
+
+#set title "variación del retardo en base al tamaño del mensaje"
+#set title "The average jitter based on the period variation"
+
+plot [$xmin:$xmax] [$ymin:$ymax] "512.txt" u 3 title "512 Bytes" w linespoints, \
+				"1024.txt" u 3 title "1 KByte" w linespoints, \
+				"3072.txt" u 3 title "3 KBytes" w linespoints, \
+				"6144.txt" u 3 title "6 KBytes" w linespoints
+
+set output
+EOF
